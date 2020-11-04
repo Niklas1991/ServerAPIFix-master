@@ -204,17 +204,19 @@ namespace ServerAPI.Services
 
 		public  bool CheckLastJwtToken(string jwtToken, Account user)
 		{
+			var userRefreshtoken = user.RefreshTokens.OrderByDescending(x => x.Id).FirstOrDefault().ToString();
 			
-			if (jwtToken != "Bearer " + user.JwtToken  )
+			bool refreshTokenCheck = CheckLastRefreshToken(userRefreshtoken, user);
+			if (jwtToken != "Bearer " + user.JwtToken || refreshTokenCheck != true )
 			{
 				return false;
 			}
 			else return true;			
 		}
 		public bool CheckLastRefreshToken(string refreshToken, Account user)
-		{
-			var checkUserTokenExists = user.RefreshTokens.Where(x => x.Token == refreshToken);
-			var lastRefreshToken = user.RefreshTokens.OrderByDescending(x => x.Id).FirstOrDefault().ToString();			
+		{			
+			var userInDb = _context.Users.Where(x => x.EmployeeId == user.EmployeeId).FirstOrDefault();
+			var lastRefreshToken = userInDb.RefreshTokens.OrderByDescending(x => x.Id).FirstOrDefault().ToString();			
 
 			if (refreshToken != lastRefreshToken)
 			{

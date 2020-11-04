@@ -47,6 +47,7 @@ namespace ServerAPI.Controllers
             }
             var jwtUserExists = await userManager.FindByNameAsync(jwtUser);
             string jwtToken = Request.Headers[HeaderNames.Authorization];
+            
 
             if (accountService.CheckLastJwtToken(jwtToken, jwtUserExists) && JwtTokenActive(jwtToken))
             {
