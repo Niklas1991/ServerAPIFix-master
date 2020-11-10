@@ -204,8 +204,7 @@ namespace ServerAPI.Services
 
 		public  bool CheckLastJwtToken(string jwtToken, Account user)
 		{
-			var userRefreshtoken = user.RefreshTokens.OrderByDescending(x => x.Id).FirstOrDefault().ToString();
-			
+			var userRefreshtoken = user.RefreshTokens.OrderByDescending(x => x.Id).FirstOrDefault().ToString();			
 			bool refreshTokenCheck = CheckLastRefreshToken(userRefreshtoken, user);
 			if (jwtToken != "Bearer " + user.JwtToken || refreshTokenCheck != true )
 			{
